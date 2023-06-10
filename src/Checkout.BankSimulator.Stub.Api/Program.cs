@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+
 namespace Checkout.BankSimulator.Stub.Api;
 
 public class Program

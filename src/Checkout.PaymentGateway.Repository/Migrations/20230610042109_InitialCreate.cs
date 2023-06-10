@@ -37,7 +37,7 @@ namespace Checkout.PaymentGateway.Repository.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClusterKey = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "money", nullable: false),
                     CardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CurrencyCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false)
                 },

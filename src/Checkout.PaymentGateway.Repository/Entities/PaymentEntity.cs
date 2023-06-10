@@ -7,7 +7,7 @@ public class PaymentEntity
 {
     public Guid Id { get; set; }
     public int ClusterKey { get; set; }
-    public int Amount { get; set; }
+    public decimal Amount { get; set; }
     public Guid CardId { get; set; }
     public required string CurrencyCode { get; set; }
     public required CardEntity Card { get; set; }
@@ -36,6 +36,7 @@ public class PaymentEntity
 
         entityTypeBuilder
             .Property(e => e.Amount)
+            .HasColumnType("money")
             .IsRequired();
 
         entityTypeBuilder

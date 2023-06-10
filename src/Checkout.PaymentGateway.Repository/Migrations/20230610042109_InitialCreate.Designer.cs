@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Checkout.PaymentGateway.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230610035249_InitialCreate")]
+    [Migration("20230610042109_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Checkout.PaymentGateway.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Checkout.PaymentGateway.Respository.Entities.CardEntity", b =>
+            modelBuilder.Entity("Checkout.PaymentGateway.Repository.Entities.CardEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -62,13 +62,13 @@ namespace Checkout.PaymentGateway.Repository.Migrations
                     b.ToTable("Card", (string)null);
                 });
 
-            modelBuilder.Entity("Checkout.PaymentGateway.Respository.Entities.PaymentEntity", b =>
+            modelBuilder.Entity("Checkout.PaymentGateway.Repository.Entities.PaymentEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("money");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -98,18 +98,18 @@ namespace Checkout.PaymentGateway.Repository.Migrations
                     b.ToTable("Payment", (string)null);
                 });
 
-            modelBuilder.Entity("Checkout.PaymentGateway.Respository.Entities.PaymentEntity", b =>
+            modelBuilder.Entity("Checkout.PaymentGateway.Repository.Entities.PaymentEntity", b =>
                 {
-                    b.HasOne("Checkout.PaymentGateway.Respository.Entities.CardEntity", "Card")
+                    b.HasOne("Checkout.PaymentGateway.Repository.Entities.CardEntity", "Card")
                         .WithOne("Payment")
-                        .HasForeignKey("Checkout.PaymentGateway.Respository.Entities.PaymentEntity", "CardId")
+                        .HasForeignKey("Checkout.PaymentGateway.Repository.Entities.PaymentEntity", "CardId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Card");
                 });
 
-            modelBuilder.Entity("Checkout.PaymentGateway.Respository.Entities.CardEntity", b =>
+            modelBuilder.Entity("Checkout.PaymentGateway.Repository.Entities.CardEntity", b =>
                 {
                     b.Navigation("Payment");
                 });
