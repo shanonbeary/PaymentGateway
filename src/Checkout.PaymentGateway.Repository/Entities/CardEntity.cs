@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Checkout.PaymentGateway.Respository.Entities;
+namespace Checkout.PaymentGateway.Repository.Entities;
 
 public class CardEntity
 {

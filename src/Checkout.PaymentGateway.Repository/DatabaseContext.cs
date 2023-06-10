@@ -1,7 +1,7 @@
-using Checkout.PaymentGateway.Respository.Entities;
+using Checkout.PaymentGateway.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Checkout.PaymentGateway.Respository;
+namespace Checkout.PaymentGateway.Repository;
 
 public class DatabaseContext : DbContext
 {
