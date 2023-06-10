@@ -7,6 +7,7 @@ This .NET Web API provides functionalities for merchants to process payments thr
 Make sure you have installed:
 
 - [.NET 7.0 SDK](https://dotnet.microsoft.com/download)
+- [Entity Framework Core Tool](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#installing-the-tools)
 - A suitable text editor or IDE (e.g., [Visual Studio Code](https://code.visualstudio.com/))
 
 ## Getting Started
@@ -30,7 +31,7 @@ cd PaymentGateway
    If your application uses a database, make sure you have the correct connection string in the appsettings.json file for your database. Then, use the following command to apply migrations and create the database:
 
 ```
-dotnet ef database update
+dotnet ef database update --project src/Checkout.PaymentGateway.Repository/Checkout.PaymentGateway.Repository.csproj --startup-project src/Checkout.PaymentGateway.Api/Checkout.PaymentGateway.Api.csproj
 ```
 
 4. **Run the project** <br>
