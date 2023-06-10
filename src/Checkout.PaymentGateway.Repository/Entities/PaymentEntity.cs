@@ -9,8 +9,9 @@ public class PaymentEntity
     public int ClusterKey { get; set; }
     public decimal Amount { get; set; }
     public Guid CardId { get; set; }
-    public required string CurrencyCode { get; set; }
-    public required CardEntity Card { get; set; }
+    public string CurrencyCode { get; set; }
+    public string Status { get; set; }
+    public CardEntity Card { get; set; }
 
     internal static void OnModelCreating(EntityTypeBuilder<PaymentEntity> entityTypeBuilder)
     {

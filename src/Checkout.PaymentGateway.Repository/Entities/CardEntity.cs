@@ -7,8 +7,7 @@ public class CardEntity
 {
     public Guid Id { get; set; }
     public int ClusterKey { get; set; }
-    public string EncryptedNumber { get; set; }
-    public string MaskedNumber { get; set; }
+    public string Number { get; set; }
     public int ExpiryMonth { get; set; }
     public int ExpiryYear { get; set; }
     public string Name { get; set; }
@@ -39,11 +38,7 @@ public class CardEntity
             .ValueGeneratedNever();
 
         entityTypeBuilder
-            .Property(e => e.EncryptedNumber)
-            .IsRequired();
-
-        entityTypeBuilder
-            .Property(e => e.MaskedNumber)
+            .Property(e => e.Number)
             .IsRequired();
 
         entityTypeBuilder

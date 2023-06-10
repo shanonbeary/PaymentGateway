@@ -2,7 +2,7 @@ using Checkout.PaymentGateway.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Checkout.PaymentGateway.Repository;
-public class PaymentSqlRepository : IPaymentSqlRepository
+public class PaymentSqlRepository : IPaymentRepository
 {
     private readonly DatabaseContext _databaseContext;
 
@@ -13,7 +13,7 @@ public class PaymentSqlRepository : IPaymentSqlRepository
 
     public async Task CreatePaymentAsync(PaymentEntity entity)
     {
-        _databaseContext.Payments.Add(entity);
+        _databaseContext.Add(entity);
 
         await _databaseContext.SaveChangesAsync();
     }
