@@ -16,7 +16,7 @@ public class PaymentService : IPaymentService
 
     public async Task<PaymentResponseDto> CreatePaymentAsync(PaymentRequestDto paymentRequestDto)
     {
-        // Call Acquiring Bank
+        // TODO: Call Acquiring Bank
 
         var paymentEntity = new PaymentEntity
         {
