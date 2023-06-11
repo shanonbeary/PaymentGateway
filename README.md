@@ -74,9 +74,12 @@ When it comes to scalability and high availability, we'll consider deploying our
 
 - It is assumed that merchants will retain the supplied identification for subsequent utilization.
 - The payment gateway is designed under the assumption that it is not required to adhere to Payment Card Industry (PCI) standards for the storage of credit card data.
+- The acquiring bank would have a more comprehensive set of validation and error scenarios, for simplicity, I focused on a valid card number.
 
 ## Areas for improvement
 
 - Using a [Asynchronous Request-Reply pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply) to manage asynchronous payment requests efficiently. This strategy becomes useful in scenarios where the acquiring bank may be temporarily unavailable or in cases where a payment needs to be retried. This pattern integrates smoothly with CQRS and Microservice patterns, offering a potential pathway for event sourcing implementation in the future.
 - Encrypting the card number, this will help with PCI complience and aligns with standards associated with storing card numbers in our database, thereby enhancing data security.
 - Build out the integration tests, .NET provided a really good framework for performant integration tests and having the bank simulator stub api we can do full integration tests. The benefit of these tests is that they serve as high-level fitness functions, validating the behavior and interactions of the system as a whole. Should the architecture evolve, these integration tests will ensure that any changes have limited and well-understood impacts on the system's overall functionality.
+- Imrpove the request validation. A framework like FluentValidation could be highly beneficial in this regard, as it simplifies request validation tasks. This includes verifying details like the expiry month and year of a card before sending these requests to the acquiring bank, ensuring only valid data is processed.
+-
