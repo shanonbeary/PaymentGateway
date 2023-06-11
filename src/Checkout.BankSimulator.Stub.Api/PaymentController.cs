@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace Checkout.BankSimulator.Stub.Api;
+
+[ApiController]
 public class PaymentController : ControllerBase
 {
     private readonly List<string> _validCreditCards = new()

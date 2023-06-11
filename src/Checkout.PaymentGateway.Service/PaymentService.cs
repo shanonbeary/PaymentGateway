@@ -77,11 +77,10 @@ public class PaymentService : IPaymentService
             Amount = paymentEntity.Amount,
             Card = new PaymentDetailsResponseDto.CardDetailsResponseDto
             {
-                Number = CardMaskUtility.MaskCardNumber(paymentEntity.Card.Number),
+                MaskedNumber = CardMaskUtility.MaskCardNumber(paymentEntity.Card.Number),
                 Name = paymentEntity.Card.Name,
                 ExpiryMonth = paymentEntity.Card.ExpiryMonth,
-                ExpiryYear = paymentEntity.Card.ExpiryYear,
-                CVV = paymentEntity.Card.CVV
+                ExpiryYear = paymentEntity.Card.ExpiryYear
             }
         };
     }

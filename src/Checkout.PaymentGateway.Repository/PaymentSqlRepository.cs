@@ -22,6 +22,7 @@ public class PaymentSqlRepository : IPaymentRepository
     {
         var query = (
             from p in _databaseContext.Payments
+                .Include(p => p.Card)
             where p.Id == id
             select p
         );

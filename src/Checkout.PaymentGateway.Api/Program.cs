@@ -1,4 +1,6 @@
+using Checkout.AcquiringBank.Client;
 using Checkout.PaymentGateway.Repository;
+using Checkout.PaymentGateway.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace Checkout.PaymentGateway.Api;
@@ -17,7 +19,12 @@ public class Program
 
         builder.Services.AddDbContext<DatabaseContext>(
             options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+        builder.Services.AddScoped<IPaymentRepository, PaymentSqlRepository>();
+        builder.Services.AddScoped<IPaymentService, PaymentService>();
+        builder.Services.AddHttpClient<IAcquiringBankClient, AcquiringBankClient>(client =>
+        {
+            client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("AcquiringBankUrl"));
+        });
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
