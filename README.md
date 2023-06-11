@@ -34,8 +34,8 @@ cd PaymentGateway
 dotnet ef database update --project src/Checkout.PaymentGateway.Repository/Checkout.PaymentGateway.Repository.csproj --startup-project src/Checkout.PaymentGateway.Api/Checkout.PaymentGateway.Api.csproj
 ```
 
-4. **Run the project** <br>
-   Run the the bank simulator and payemnt gateway in seperate terminals using the following command:
+4. **Run the projects** <br>
+   Run the the bank simulator and payement gateway in seperate terminals using the following command:
 
 ```
 dotnet run --project src/Checkout.BankSimulator.Stub.Api/Checkout.BankSimulator.Stub.Api.csproj
@@ -45,22 +45,39 @@ dotnet run --project src/Checkout.BankSimulator.Stub.Api/Checkout.BankSimulator.
 dotnet run --project src/Checkout.PaymentGateway.Api/Checkout.PaymentGateway.Api.csproj
 ```
 
-You should now be able to access the API endpoints at http://localhost:5000 (or https://localhost:5001 for HTTPS).
+You should now be able to access the Payment Gateway endpoints at http://localhost:5233 (or https://localhost:7162 for HTTPS) to open swagger documentation.
 
-## Testing
+5. **Run the tests** <br>
+   This will run all test projects in the solution.
 
-TODO
+Note: If you want to run a specific test project, navigate to the test project directory and run the dotnet test command.
+
+```
+dotnet test
+```
 
 ## Architecture
 
-TODO
+This project uses a simple Layered Architecture approach, following the Keep it Simple Stupid (KISS) principle. This architecture is ideal for small to medium-sized projects. For larger, more complex projects, I recommend considering other architectures such as Clean Architecture or Onion Architecture.
+
+![](./PaymentGatewayArchitecture.png)
 
 ## Cloud Architecture
 
-TODO
+This project is designed to be deployed on the cloud using Amazon Web Services (AWS). I chose AWS for its robust suite of cloud services that allow us to manage, scale, and secure our application effectively. Here are key AWS technologies we could use to host the payment gateway:
+
+- **_AWS Fargate:_** Fargate is a serverless compute engine that's ideal for hosting our application workloads. With Fargate, we can focus on application development without worrying about managing the underlying infrastructure. One of its strengths is environment consistency, as it allows us to use Docker for both local development and production. Additionally, Fargate works seamlessly with either Amazon Elastic Container Service (ECS) or Amazon Elastic Kubernetes Service (EKS).
+- **_Amazon RDS:_** I'd use Amazon Relational Database Service (RDS) as the relational database system. Amazon RDS makes it easy to set up, operate, and scale a relational database in the cloud.
+- **_Amazon VPC:_** Since were developing a payment gateway, network security is of important. I'd leverage Amazon Virtual Private Cloud (VPC) to secure our application. Our application, hosted on Fargate, is located within a private subnet and is only accessible through a secure gateway.
+
+When it comes to scalability and high availability, we consider deploying our application across multiple Availability Zones (AZs) to ensure continuous uptime and performance. Moreover, replication of our SQL database is an important step towards building a resilient and fault-tolerant system.
 
 ## Asumptions
 
-TODO
+- It is assumed that merchants will retain the supplied identification for subsequent utilization.
+- The payment gateway is designed under the assumption that it is not required to adhere to Payment Card Industry (PCI) standards for the storage of credit card data.
 
 ## Areas for improvement
+
+- Using a [Asynchronous Request-Reply pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply) to manage asynchronous payment requests efficiently. This strategy becomes useful in scenarios where the acquiring bank may be temporarily unavailable or in cases where a payment needs to be retried. This pattern integrates smoothly with CQRS and Microservice patterns, offering a potential pathway for event sourcing implementation in the future.
+- Encrypting the card number, this will help with PCI complience and aligns with standards associated with storing card numbers in our database, thereby enhancing data security.
