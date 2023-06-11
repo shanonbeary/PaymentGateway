@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Checkout.PaymentGateway.Model\Checkout.PaymentGateway.Model.csproj" />
     <ProjectReference Include="..\Checkout.PaymentGateway.Repository\Checkout.PaymentGateway.Repository.csproj" />
+    <ProjectReference Include="..\Checkout.AcquiringBank.Client\Checkout.AcquiringBank.Client.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

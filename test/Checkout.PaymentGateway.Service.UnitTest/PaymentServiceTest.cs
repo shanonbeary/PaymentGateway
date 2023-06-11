@@ -1,3 +1,4 @@
+using Checkout.AcquiringBank.Client;
 using Checkout.PaymentGateway.Model;
 using Checkout.PaymentGateway.Repository;
 using Checkout.PaymentGateway.Repository.Entities;
@@ -26,8 +27,18 @@ public class PaymentServiceTest
             }
         };
 
+        var acquiringBankPaymentResponse = new AcquiringBankPaymentResponseDto
+        {
+            Id = Guid.NewGuid(),
+            CurrencyCode = paymentRequestDto.CurrencyCode,
+            Amount = paymentRequestDto.Amount,
+            Status = "Accepted"
+        };
+
         var paymentRepository = new Mock<IPaymentRepository>();
-        var paymentService = new PaymentService(paymentRepository.Object);
+        var acquiringBankClient = new Mock<IAcquiringBankClient>();
+        acquiringBankClient.Setup(x => x.RequestPaymentAsync(It.IsAny<AcquiringBankPaymentRequestDto>())).ReturnsAsync(acquiringBankPaymentResponse);
+        var paymentService = new PaymentService(paymentRepository.Object, acquiringBankClient.Object);
 
         // Act
         var response = await paymentService.CreatePaymentAsync(paymentRequestDto);
@@ -60,8 +71,9 @@ public class PaymentServiceTest
 
         var paymentRepository = new Mock<IPaymentRepository>();
         paymentRepository.Setup(x => x.GetPaymentByIdAsync(paymentEntity.Id)).ReturnsAsync(paymentEntity);
+        var acquiringBankClient = new Mock<IAcquiringBankClient>();
 
-        var paymentService = new PaymentService(paymentRepository.Object);
+        var paymentService = new PaymentService(paymentRepository.Object, acquiringBankClient.Object);
 
         // Act
         var response = await paymentService.GetPaymentByIdAsync(paymentEntity.Id);
@@ -86,8 +98,9 @@ public class PaymentServiceTest
 
         var paymentRepository = new Mock<IPaymentRepository>();
         paymentRepository.Setup(x => x.GetPaymentByIdAsync(paymentId)).ReturnsAsync((PaymentEntity)null);
+        var acquiringBankClient = new Mock<IAcquiringBankClient>();
 
-        var paymentService = new PaymentService(paymentRepository.Object);
+        var paymentService = new PaymentService(paymentRepository.Object, acquiringBankClient.Object);
 
         // Act Assert
         await Assert.ThrowsAsync<EntityNotFoundException>(() => paymentService.GetPaymentByIdAsync(paymentId));

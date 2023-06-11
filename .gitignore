@@ -366,3 +366,5 @@ $SYM_CACHE_DIRECTORY/
 *.trx
 *.TestResults
 *.testlog
+
+.DS_Store

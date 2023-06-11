@@ -1,3 +1,4 @@
+using Checkout.AcquiringBank.Client;
 using Checkout.PaymentGateway.Model;
 using Checkout.PaymentGateway.Repository;
 using Checkout.PaymentGateway.Repository.Entities;
@@ -8,40 +9,60 @@ namespace Checkout.PaymentGateway.Service;
 public class PaymentService : IPaymentService
 {
     private readonly IPaymentRepository _paymentRepository;
-
-    public PaymentService(IPaymentRepository paymentRepository)
+    private readonly IAcquiringBankClient _acquiringBankClient;
+    public PaymentService(IPaymentRepository paymentRepository, IAcquiringBankClient acquiringBank)
     {
         _paymentRepository = paymentRepository;
+        _acquiringBankClient = acquiringBank;
     }
 
     public async Task<PaymentResponseDto> CreatePaymentAsync(PaymentRequestDto paymentRequestDto)
     {
-        // TODO: Call Acquiring Bank
-
-        var paymentEntity = new PaymentEntity
+        var acquiringBankPaymentRequest = new AcquiringBankPaymentRequestDto
         {
-            Id = Guid.NewGuid(),
-            Amount = paymentRequestDto.Amount,
             CurrencyCode = paymentRequestDto.CurrencyCode,
-            Status = "Successful",
-            Card = new CardEntity
+            Amount = paymentRequestDto.Amount,
+            Card = new AcquiringBankPaymentRequestDto.AcquiringBankCardRequestDto
             {
-                Id = Guid.NewGuid(),
                 Number = paymentRequestDto.Card.Number,
+                Name = paymentRequestDto.Card.Name,
                 ExpiryMonth = paymentRequestDto.Card.ExpiryMonth,
                 ExpiryYear = paymentRequestDto.Card.ExpiryYear,
-                Name = paymentRequestDto.Card.Name,
                 CVV = paymentRequestDto.Card.CVV
             }
         };
 
-        await _paymentRepository.CreatePaymentAsync(paymentEntity);
+        var acquiringBankPaymentResponse = await _acquiringBankClient.RequestPaymentAsync(acquiringBankPaymentRequest);
 
-        return new PaymentResponseDto
+        if (acquiringBankPaymentResponse.Status == "Accepted")
         {
-            Id = paymentEntity.Id,
-            Status = paymentEntity.Status
-        };
+            var paymentEntity = new PaymentEntity
+            {
+                Id = Guid.NewGuid(),
+                Amount = paymentRequestDto.Amount,
+                CurrencyCode = paymentRequestDto.CurrencyCode,
+                Status = "Successful",
+                Card = new CardEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Number = paymentRequestDto.Card.Number,
+                    ExpiryMonth = paymentRequestDto.Card.ExpiryMonth,
+                    ExpiryYear = paymentRequestDto.Card.ExpiryYear,
+                    Name = paymentRequestDto.Card.Name,
+                    CVV = paymentRequestDto.Card.CVV
+                }
+            };
+
+            await _paymentRepository.CreatePaymentAsync(paymentEntity);
+
+            return new PaymentResponseDto
+            {
+                Id = paymentEntity.Id,
+                Status = paymentEntity.Status
+            };
+        }
+
+        throw new Exception();
     }
 
     public async Task<PaymentDetailsResponseDto> GetPaymentByIdAsync(Guid paymentId)
