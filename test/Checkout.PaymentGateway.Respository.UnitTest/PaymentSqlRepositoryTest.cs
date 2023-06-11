@@ -1,6 +1,5 @@
 using Checkout.PaymentGateway.Repository;
-using Checkout.PaymentGateway.Repository.Entities;
-using Microsoft.EntityFrameworkCore;
+using Checkout.PaymentGateway.Model.Entities;
 using Moq;
 using Moq.EntityFrameworkCore;
 

@@ -1,4 +1,4 @@
-using Checkout.PaymentGateway.Repository.Entities;
+using Checkout.PaymentGateway.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Checkout.PaymentGateway.Repository;

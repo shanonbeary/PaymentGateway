@@ -1,7 +1,7 @@
 using Checkout.AcquiringBank.Client;
 using Checkout.PaymentGateway.Model;
 using Checkout.PaymentGateway.Repository;
-using Checkout.PaymentGateway.Repository.Entities;
+using Checkout.PaymentGateway.Model.Entities;
 using Checkout.PaymentGateway.Service.Utilities;
 using Moq;
 
@@ -83,11 +83,10 @@ public class PaymentServiceTest
         Assert.Equal(paymentEntity.Id, response.Id);
         Assert.Equal(paymentEntity.Amount, response.Amount);
         Assert.Equal(paymentEntity.CurrencyCode, response.CurrencyCode);
-        Assert.Equal(maskedCardNumber, response.Card.Number);
+        Assert.Equal(maskedCardNumber, response.Card.MaskedNumber);
         Assert.Equal(paymentEntity.Card.ExpiryMonth, response.Card.ExpiryMonth);
         Assert.Equal(paymentEntity.Card.ExpiryYear, response.Card.ExpiryYear);
         Assert.Equal(paymentEntity.Card.Name, response.Card.Name);
-        Assert.Equal(paymentEntity.Card.CVV, response.Card.CVV);
     }
 
     [Fact]

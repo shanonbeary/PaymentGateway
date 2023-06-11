@@ -1,7 +1,7 @@
 using Checkout.AcquiringBank.Client;
 using Checkout.PaymentGateway.Model;
 using Checkout.PaymentGateway.Repository;
-using Checkout.PaymentGateway.Repository.Entities;
+using Checkout.PaymentGateway.Model.Entities;
 using Checkout.PaymentGateway.Service.Utilities;
 
 namespace Checkout.PaymentGateway.Service;

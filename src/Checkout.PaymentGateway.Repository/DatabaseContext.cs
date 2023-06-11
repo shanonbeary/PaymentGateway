@@ -1,4 +1,5 @@
-using Checkout.PaymentGateway.Repository.Entities;
+using Checkout.PaymentGateway.Model.Entities;
+using Checkout.PaymentGateway.Repository.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Checkout.PaymentGateway.Repository;
@@ -15,7 +16,7 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        PaymentEntity.OnModelCreating(modelBuilder.Entity<PaymentEntity>());
-        CardEntity.OnModelCreating(modelBuilder.Entity<CardEntity>());
+        modelBuilder.ApplyConfiguration(new PaymentEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new CardEntityTypeConfiguration());
     }
 }
