@@ -48,9 +48,7 @@ dotnet run --project src/Checkout.PaymentGateway.Api/Checkout.PaymentGateway.Api
 You should now be able to access the Payment Gateway endpoints at http://localhost:5233 (or https://localhost:7162 for HTTPS) to open swagger documentation.
 
 5. **Run the tests** <br>
-   This will run all test projects in the solution.
-
-Note: If you want to run a specific test project, navigate to the test project directory and run the dotnet test command.
+   This will run all test projects in the solution. <br> **_Note:_** If you want to run a specific test project, navigate to the test project directory and run the dotnet test command.
 
 ```
 dotnet test
@@ -68,9 +66,9 @@ This project is designed to be deployed on the cloud using Amazon Web Services (
 
 - **_AWS Fargate:_** Fargate is a serverless compute engine that's ideal for hosting our application workloads. With Fargate, we can focus on application development without worrying about managing the underlying infrastructure. One of its strengths is environment consistency, as it allows us to use Docker for both local development and production. Additionally, Fargate works seamlessly with either Amazon Elastic Container Service (ECS) or Amazon Elastic Kubernetes Service (EKS).
 - **_Amazon RDS:_** I'd use Amazon Relational Database Service (RDS) as the relational database system. Amazon RDS makes it easy to set up, operate, and scale a relational database in the cloud.
-- **_Amazon VPC:_** Since were developing a payment gateway, network security is of important. I'd leverage Amazon Virtual Private Cloud (VPC) to secure our application. Our application, hosted on Fargate, is located within a private subnet and is only accessible through a secure gateway.
+- **_Amazon VPC:_** Since were developing a payment gateway, network security is of important. I'd leverage Amazon Virtual Private Cloud (VPC) to secure our application. The application would only be accessible through a secure gateway.
 
-When it comes to scalability and high availability, we consider deploying our application across multiple Availability Zones (AZs) to ensure continuous uptime and performance. Moreover, replication of our SQL database is an important step towards building a resilient and fault-tolerant system.
+When it comes to scalability and high availability, we'll consider deploying our application across multiple Availability Zones (AZs) to ensure continuous uptime and performance. Moreover, replication of our SQL database is an important step towards building a resilient and fault-tolerant system.
 
 ## Asumptions
 
@@ -81,3 +79,4 @@ When it comes to scalability and high availability, we consider deploying our ap
 
 - Using a [Asynchronous Request-Reply pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply) to manage asynchronous payment requests efficiently. This strategy becomes useful in scenarios where the acquiring bank may be temporarily unavailable or in cases where a payment needs to be retried. This pattern integrates smoothly with CQRS and Microservice patterns, offering a potential pathway for event sourcing implementation in the future.
 - Encrypting the card number, this will help with PCI complience and aligns with standards associated with storing card numbers in our database, thereby enhancing data security.
+- Build out the integration tests, .NET provided a really good framework for performant integration tests and having the bank simulator stub api we can do full integration tests. The benefit of these tests is that they serve as high-level fitness functions, validating the behavior and interactions of the system as a whole. Should the architecture evolve, these integration tests will ensure that any changes have limited and well-understood impacts on the system's overall functionality.
