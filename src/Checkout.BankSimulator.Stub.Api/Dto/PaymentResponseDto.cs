@@ -1,5 +1,5 @@
-namespace Checkout.BankSimulator.Stub.Api;
-public class PaymentApiResponseModel
+namespace Checkout.BankSimulator.Stub.Api.Dto;
+public class PaymentResponseDto
 {
     public Guid Id { get; set; }
     public string CurrencyCode { get; set; }

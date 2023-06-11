@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Checkout.BankSimulator.Stub.Api.Dto;
 
-namespace Checkout.BankSimulator.Stub.Api;
+namespace Checkout.BankSimulator.Stub.Api.Controllers;
 
 [ApiController]
 public class PaymentController : ControllerBase
@@ -11,25 +12,31 @@ public class PaymentController : ControllerBase
     };
 
     [HttpPost("payments")]
-    public IActionResult CreatePayment([FromBody] PaymentApiRequestModel requestModel)
+    public IActionResult CreatePayment([FromBody] PaymentRequestDto requestModel)
     {
         if (_validCreditCards.Contains(requestModel.Card.Number))
         {
-            return Ok(new PaymentApiResponseModel
+            return new ObjectResult(new PaymentResponseDto
             {
                 Id = Guid.NewGuid(),
                 Amount = requestModel.Amount,
                 CurrencyCode = requestModel.CurrencyCode,
                 Status = "Accepted"
-            });
+            })
+            {
+                StatusCode = StatusCodes.Status201Created
+            };
         }
         else
         {
-            return BadRequest(new PaymentApiErrorResponseModel
+            return new ObjectResult(new PaymentErrorResponseDto
             {
                 ErrorType = "InvalidCard",
-                ErrorMessage = "Your card nunber is invalid"
-            });
+                ErrorMessage = "Your card number is invalid"
+            })
+            {
+                StatusCode = StatusCodes.Status422UnprocessableEntity
+            };
         }
     }
 }

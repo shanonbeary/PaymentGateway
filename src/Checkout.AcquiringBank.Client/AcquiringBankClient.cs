@@ -17,8 +17,11 @@ public class AcquiringBankClient : IAcquiringBankClient
             "payments",
             paymentRequestDto);
 
-        response.EnsureSuccessStatusCode();
-
-        return await response.Content.ReadFromJsonAsync<AcquiringBankPaymentResponseDto>();
+        return response.StatusCode switch
+        {
+            System.Net.HttpStatusCode.Created => await response.Content.ReadFromJsonAsync<AcquiringBankPaymentResponseDto>(),
+            System.Net.HttpStatusCode.UnprocessableEntity => throw new UnprocessableEntityException(await response.Content.ReadFromJsonAsync<AcquiringBankPaymentErrorResonseDto>()),
+            _ => throw new UnexpectedStatusCodeException(response.StatusCode, await response.Content.ReadAsStringAsync())
+        };
     }
 }

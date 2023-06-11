@@ -1,4 +1,4 @@
-namespace Checkout.PaymentGateway.Model;
+namespace Checkout.PaymentGateway.Model.Dto;
 
 public class PaymentRequestDto
 {

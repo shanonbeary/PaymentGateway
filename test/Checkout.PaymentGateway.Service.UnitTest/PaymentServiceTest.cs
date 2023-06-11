@@ -1,9 +1,10 @@
 using Checkout.AcquiringBank.Client;
-using Checkout.PaymentGateway.Model;
+using Checkout.PaymentGateway.Model.Dto;
 using Checkout.PaymentGateway.Repository;
 using Checkout.PaymentGateway.Model.Entities;
 using Checkout.PaymentGateway.Service.Utilities;
 using Moq;
+using Checkout.PaymentGateway.Model.Exceptions;
 
 namespace Checkout.PaymentGateway.Service.UnitTest;
 
@@ -45,7 +46,7 @@ public class PaymentServiceTest
 
         // Assert
         Assert.NotNull(response);
-        Assert.Equal("Successful", response.Status);
+        Assert.Equal("Accepted", response.Status);
     }
 
     [Fact]

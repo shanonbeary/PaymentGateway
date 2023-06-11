@@ -1,4 +1,4 @@
-using Checkout.PaymentGateway.Model;
+using Checkout.PaymentGateway.Model.Dto;
 
 namespace Checkout.PaymentGateway.Service;
 

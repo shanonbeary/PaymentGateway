@@ -35,10 +35,14 @@ dotnet ef database update --project src/Checkout.PaymentGateway.Repository/Check
 ```
 
 4. **Run the project** <br>
-   Run the project using the following command:
+   Run the the bank simulator and payemnt gateway in seperate terminals using the following command:
 
 ```
-dotnet run
+dotnet run --project src/Checkout.BankSimulator.Stub.Api/Checkout.BankSimulator.Stub.Api.csproj
+```
+
+```
+dotnet run --project src/Checkout.PaymentGateway.Api/Checkout.PaymentGateway.Api.csproj
 ```
 
 You should now be able to access the API endpoints at http://localhost:5000 (or https://localhost:5001 for HTTPS).

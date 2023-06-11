@@ -1,12 +1,12 @@
-namespace Checkout.BankSimulator.Stub.Api;
+namespace Checkout.BankSimulator.Stub.Api.Dto;
 
-public class PaymentApiRequestModel
+public class PaymentRequestDto
 {
     public string CurrencyCode { get; set; }
     public decimal Amount { get; set; }
-    public CardApiRequestModel Card { get; set; }
+    public CardRequestDto Card { get; set; }
 
-    public class CardApiRequestModel
+    public class CardRequestDto
     {
         public string Number { get; set; }
         public int ExpiryMonth { get; set; }

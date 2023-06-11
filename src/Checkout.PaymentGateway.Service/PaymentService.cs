@@ -1,5 +1,6 @@
 using Checkout.AcquiringBank.Client;
-using Checkout.PaymentGateway.Model;
+using Checkout.PaymentGateway.Model.Dto;
+using Checkout.PaymentGateway.Model.Exceptions;
 using Checkout.PaymentGateway.Repository;
 using Checkout.PaymentGateway.Model.Entities;
 using Checkout.PaymentGateway.Service.Utilities;
@@ -10,6 +11,7 @@ public class PaymentService : IPaymentService
 {
     private readonly IPaymentRepository _paymentRepository;
     private readonly IAcquiringBankClient _acquiringBankClient;
+
     public PaymentService(IPaymentRepository paymentRepository, IAcquiringBankClient acquiringBank)
     {
         _paymentRepository = paymentRepository;
@@ -34,35 +36,30 @@ public class PaymentService : IPaymentService
 
         var acquiringBankPaymentResponse = await _acquiringBankClient.RequestPaymentAsync(acquiringBankPaymentRequest);
 
-        if (acquiringBankPaymentResponse.Status == "Accepted")
+        var paymentEntity = new PaymentEntity
         {
-            var paymentEntity = new PaymentEntity
+            Id = Guid.NewGuid(),
+            Amount = paymentRequestDto.Amount,
+            CurrencyCode = paymentRequestDto.CurrencyCode,
+            Status = acquiringBankPaymentResponse.Status,
+            Card = new CardEntity
             {
                 Id = Guid.NewGuid(),
-                Amount = paymentRequestDto.Amount,
-                CurrencyCode = paymentRequestDto.CurrencyCode,
-                Status = "Successful",
-                Card = new CardEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Number = paymentRequestDto.Card.Number,
-                    ExpiryMonth = paymentRequestDto.Card.ExpiryMonth,
-                    ExpiryYear = paymentRequestDto.Card.ExpiryYear,
-                    Name = paymentRequestDto.Card.Name,
-                    CVV = paymentRequestDto.Card.CVV
-                }
-            };
+                Number = paymentRequestDto.Card.Number,
+                ExpiryMonth = paymentRequestDto.Card.ExpiryMonth,
+                ExpiryYear = paymentRequestDto.Card.ExpiryYear,
+                Name = paymentRequestDto.Card.Name,
+                CVV = paymentRequestDto.Card.CVV
+            }
+        };
 
-            await _paymentRepository.CreatePaymentAsync(paymentEntity);
+        await _paymentRepository.CreatePaymentAsync(paymentEntity);
 
-            return new PaymentResponseDto
-            {
-                Id = paymentEntity.Id,
-                Status = paymentEntity.Status
-            };
-        }
-
-        throw new Exception();
+        return new PaymentResponseDto
+        {
+            Id = paymentEntity.Id,
+            Status = paymentEntity.Status
+        };
     }
 
     public async Task<PaymentDetailsResponseDto> GetPaymentByIdAsync(Guid paymentId)

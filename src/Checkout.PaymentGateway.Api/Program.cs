@@ -31,7 +31,11 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Checkout Payment Gateway Api");
+                c.RoutePrefix = string.Empty;
+            });
         }
 
         app.UseHttpsRedirection();
