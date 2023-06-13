@@ -72,7 +72,7 @@ When it comes to scalability and high availability, we'll consider deploying our
 
 ## Asumptions
 
-- It is assumed that merchants will retain the supplied identification for subsequent utilization.
+- It is assumed that merchants will retain the supplied identification for subsequent requests.
 - The payment gateway is designed under the assumption that it is not required to adhere to Payment Card Industry (PCI) standards for the storage of credit card data.
 - The acquiring bank would have a more comprehensive set of validation and error scenarios, for simplicity, I focused on a valid card number.
 
